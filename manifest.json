@@ -1,0 +1,22 @@
+{
+   "name": "Who Tweeted This",
+   "content_scripts": [ {
+      "js": [ "wtt_patch_twitter.js" ],
+      "matches": [ "http://twitter.com/*", "https://twitter.com/*" ],
+      "run_at": "document_idle"
+   } ],
+	 "background_page": "wtt_bg.html",
+   "description": "“Who Tweeted This” memorizes the tweet from which you followed a link. Useful if you a) opened 20 tabs by clicking on links in tweets and, b) after reading the linked page, feel an urge to reply or retweet, but c) can’t find the corresponding tweet in your timeline any more.",
+   "icons": {
+      "128": "icons/wtt_128.png",
+      "48": "icons/wtt_48.png"
+   },
+   "page_action": {
+      "default_icon": "icons/wtt_19.png",
+      "default_title": "Read the tweet that made you open this page",
+      "default_popup": "wtt_popup.html"
+   },
+   "permissions": [ "http://twitter.com/*", "https://twitter.com/*",
+	                  "tabs", "http://*/*" ],
+   "version": "0.1"
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<title>Who Tweeted This?</title>
+  </head>
+	<body>
+		<h1>Who Tweeted This?</h1>
+		<div id="tweets">
+		</div>
+		<script>
+document.addEventListener(
+  'DOMContentLoaded', 
+  function() {
+    chrome.tabs.getSelected(
+      null, 
+      function(tab) {
+        chrome.extension.sendRequest(
+          {action: "wtt_retrieve", link_href: tab.url}, 
+          function(response) {
+            document.getElementById('tweets').innerHTML = '<a target="_blank" href="http://twitter.com' + response + '">' + response + '</a>';
+          }
+        );
+      }
+    );
+  }, 
+  false
+);
+		</script>
+	</body>
+</html>
