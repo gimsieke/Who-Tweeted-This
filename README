@@ -6,20 +6,6 @@ but
 c) can’t find the corresponding tweet in your timeline any more.
 
 
-To do:
-
-- Proper short URL resolution. To my surprise, this is all but
-  trivial since XMLHttpRequest transparently resolves all the
-  redirections, and there’s no raw socket HTTP thing. Will try
-  Websockets for this eventually. Until then, we’ll have to put
-  up with what Twitter’s offering in the data-expanded-url
-  attribute. This is the URL, stripped by any GET parameters
-  and fragment identifiers. It will not work well with sites
-  that distinguish their pages by something like ?id=…, potentially
-  giving credit to a tweet that linked to another page of the 
-  same site.
-
-
 Author: 
 Gerrit Imsieke, Leipzig, Germany
 gerrit.imsieke@gmail.com
