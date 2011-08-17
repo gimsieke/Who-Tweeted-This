@@ -26,17 +26,6 @@ var patch_links = function() {
   }
 };
 
-var resolve_url = function(url) {
-  var loc = url;
-  var req = new XMLHttpRequest();
-  req.open("HEAD", url);
-  req.send();
-  req.onreadystatechange = function() {
-    var headers = req.getAllResponseHeaders();
-    alert(headers);
-  };
-}
-
 var repeat = setInterval(
   function() {
     patch_links();
