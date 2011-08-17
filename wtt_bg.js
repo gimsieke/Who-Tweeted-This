@@ -39,9 +39,11 @@ var wtt_get_tweet = function(url, tweet_path) {
 	var tweet_id = tweet_path.replace(/^.+\//, '');
 	var req = new XMLHttpRequest();
 	req.open('GET', 'http://api.twitter.com/1/statuses/show.json?id=' + tweet_id);
-	req.onload = function() {
-		var res = JSON.parse(req.responseText);
-		wtt_tweetPath_by_pageUrl[url][tweet_path] = res;
+	req.onreadystatechange = function() {
+		if (req.readyState === 4 && req.status === 200) {
+			var res = JSON.parse(req.responseText);
+			wtt_tweetPath_by_pageUrl[url][tweet_path] = res;
+		}
 	};
 	req.send();
 };

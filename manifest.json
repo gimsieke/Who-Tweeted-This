@@ -18,7 +18,7 @@
       "default_popup": "wtt_popup.html"
    },
    "permissions": [ "http://twitter.com/*", "https://twitter.com/*",
-	                  "tabs", "http://*/*" ],
-   "version": "0.2",
+	                  "tabs", "http://*/*", "https://*/*" ],
+   "version": "0.3",
    "homepage_url": "https://github.com/gimsieke/Who-Tweeted-This"
 }

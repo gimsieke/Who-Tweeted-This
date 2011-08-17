@@ -19,7 +19,6 @@ var patch_links = function() {
 	var links = document.getElementsByClassName("twitter-timeline-link");
 	for (var i = 0; i < links.length; i++) {
 		if (! links[i].dataset.wtt) {
-			//			links[i].addEventListener("click", function() { resolve_url(this.getAttribute("href")); }, false);
 			links[i].addEventListener("click", function() { register_tweet_for_link(tweet_path(this), this.getAttribute("data-expanded-url")); }, false);
 			links[i].dataset.wtt = 'set';
 		}
@@ -44,8 +43,8 @@ var resolve_url = function(url) {
 
 
 var repeat = setInterval(
-												 function() {
-													 patch_links();
-												 },
-												 1000
-												 );
+  function() {
+    patch_links();
+  },
+  1000
+);
