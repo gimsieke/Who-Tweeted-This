@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-		<title>Who Tweeted This?</title>
+    <title>Who Tweeted This?</title>
     <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
     <style>
 @media screen and (min-device-width: 640px) {
@@ -12,13 +12,13 @@
 
 body {
   font-family: sans-serif;
-	font-size: 12pt;
+  font-size: 12pt;
 }
 
 h1 {
   font-size: 120%;
   margin:0.8em 1.3em 0 1.3em;
-	padding-bottom:0;
+  padding-bottom:0;
 }
 
 div.tweet {
@@ -77,16 +77,16 @@ a:hover {
 }
     </style>
   </head>
-	<body>
-		<h1><a href="https://github.com/gimsieke/Who-Tweeted-This" target="_blank">Who Tweeted This?</a></h1>
-		<div id="tweets">
-		</div>
-		<script>
+  <body>
+    <h1><a href="https://github.com/gimsieke/Who-Tweeted-This" target="_blank">Who Tweeted This?</a></h1>
+    <div id="tweets">
+    </div>
+    <script>
 // This is so effing ugly. Humiliating. I want to create nodes proper, but without resorting to DOM methods.
 // The next Web should be done with XQuery.
 var render_tweet = function(tweet) { 
   return "<div class='tweet'><p class='tweet'>" 
-	          + tweet.text 
+            + tweet.text 
             + "<span class='timestamp'>"
               + "<a title='" + tweet.created_at + "' href='http://twitter.com/#!/" + tweet.user.screen_name + "/status/" + tweet.id_str + "' target='_blank'>"
               + tweet.created_at + "</a> " 
@@ -113,11 +113,11 @@ document.addEventListener(
         chrome.extension.sendRequest(
           {action: "wtt_retrieve", link_href: tab.url}, 
           function(response) {
-						var content = ''; // avoid DOM element creation at all cost ;-)
+            var content = ''; // avoid DOM element creation at all cost ;-)
             for (tweet in response.tweets) {
               content += render_tweet(response.tweets[tweet]) + "\n  ";
-						}
-						document.getElementById('tweets').innerHTML = content;
+            }
+            document.getElementById('tweets').innerHTML = content;
           }
         );
       }
@@ -125,6 +125,6 @@ document.addEventListener(
   }, 
   false
 );
-		</script>
-	</body>
+    </script>
+  </body>
 </html>

@@ -10,10 +10,10 @@ chrome.tabs.onUpdated.addListener(
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     if (request.action == "wtt_register") {
-			if (wtt_tweetPath_by_pageUrl[wtt_normalize_url(decodeURIComponent(request.link_href))] == undefined) {
-				wtt_tweetPath_by_pageUrl[wtt_normalize_url(decodeURIComponent(request.link_href))] = {};  
-			}
-			wtt_get_tweet(wtt_normalize_url(decodeURIComponent(request.link_href)), request.tweet_path);
+      if (wtt_tweetPath_by_pageUrl[wtt_normalize_url(decodeURIComponent(request.link_href))] == undefined) {
+        wtt_tweetPath_by_pageUrl[wtt_normalize_url(decodeURIComponent(request.link_href))] = {};  
+      }
+      wtt_get_tweet(wtt_normalize_url(decodeURIComponent(request.link_href)), request.tweet_path);
       sendResponse({});
     }
   }
@@ -36,14 +36,14 @@ var wtt_normalize_url = function(url) {
 };
 
 var wtt_get_tweet = function(url, tweet_path) {
-	var tweet_id = tweet_path.replace(/^.+\//, '');
-	var req = new XMLHttpRequest();
-	req.open('GET', 'http://api.twitter.com/1/statuses/show.json?id=' + tweet_id);
-	req.onreadystatechange = function() {
-		if (req.readyState === 4 && req.status === 200) {
-			var res = JSON.parse(req.responseText);
-			wtt_tweetPath_by_pageUrl[url][tweet_path] = res;
-		}
-	};
-	req.send();
+  var tweet_id = tweet_path.replace(/^.+\//, '');
+  var req = new XMLHttpRequest();
+  req.open('GET', 'http://api.twitter.com/1/statuses/show.json?id=' + tweet_id);
+  req.onreadystatechange = function() {
+    if (req.readyState === 4 && req.status === 200) {
+      var res = JSON.parse(req.responseText);
+      wtt_tweetPath_by_pageUrl[url][tweet_path] = res;
+    }
+  };
+  req.send();
 };
