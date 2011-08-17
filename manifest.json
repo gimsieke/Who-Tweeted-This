@@ -19,6 +19,6 @@
    },
    "permissions": [ "http://twitter.com/*", "https://twitter.com/*",
 	                  "tabs", "http://*/*", "https://*/*" ],
-   "version": "0.3",
+   "version": "0.4pre",
    "homepage_url": "https://github.com/gimsieke/Who-Tweeted-This"
 }
