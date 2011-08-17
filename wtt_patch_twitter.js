@@ -1,6 +1,6 @@
 
 function tweet_path(context_node) { 
-	var href = document.evaluate("ancestor::div[@class = 'stream-item ']//a[@class = 'tweet-timestamp']/@href", context_node, null, XPathResult.STRING_TYPE, null).stringValue;
+	var href = document.evaluate("ancestor::div[@class = 'stream-item' or @class = 'stream-item ']//a[@class = 'tweet-timestamp']/@href", context_node, null, XPathResult.STRING_TYPE, null).stringValue;
 	return href;
 }
 
@@ -19,12 +19,29 @@ var patch_links = function() {
 	var links = document.getElementsByClassName("twitter-timeline-link");
 	for (var i = 0; i < links.length; i++) {
 		if (! links[i].dataset.wtt) {
-			//			links[i].addEventListener("click", function() { alert(tweet_path(this)); }, false);
+			//			links[i].addEventListener("click", function() { resolve_url(this.getAttribute("href")); }, false);
 			links[i].addEventListener("click", function() { register_tweet_for_link(tweet_path(this), this.getAttribute("data-expanded-url")); }, false);
 			links[i].dataset.wtt = 'set';
 		}
 	}
 };
+
+var resolve_url = function(url) {
+	var loc = url;
+	var req = new XMLHttpRequest();
+	req.open("HEAD", url);
+	req.send();
+ 	req.onreadystatechange = function() {
+		var headers = req.getAllResponseHeaders();
+		alert(headers);
+ 	};
+}
+
+// 		while (req.status.match(/^3/)) {
+// 			loc = req.getResponseHeader("Location");
+// 			resolve_url(loc);
+//		}
+
 
 var repeat = setInterval(
 												 function() {

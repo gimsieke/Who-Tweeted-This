@@ -2,12 +2,108 @@
 <html>
   <head>
 		<title>Who Tweeted This?</title>
+    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+    <style>
+@media screen and (min-device-width: 640px) {
+  div#tweets {
+    min-width: 500px;
+  }
+}
+
+body {
+  font-family: sans-serif;
+	font-size: 12pt;
+}
+
+h1 {
+  font-size: 120%;
+  margin:0.8em 1.3em 0 1.3em;
+	padding-bottom:0;
+}
+
+div.tweet {
+  background:url(http://a0.twimg.com/images/themes/theme1/bg.png) #C0DEED;padding:20px;
+  margin:1em 0 0.5em 0;
+} 
+
+p.tweet{
+  background:#fff;
+  padding:10px 12px 10px 12px;
+  margin:0;
+  min-height:48px;color:#000;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px
+  border-radius:5px
+} 
+
+p.tweet span.metadata{
+  display:block;
+  width:100%;
+  clear:both;
+  margin-top:8px;
+  padding-top:12px;
+  height:40px;
+  border-top:1px solid #fff;
+  border-top:1px solid #e6e6e6
+}
+
+p.tweet span.metadata span.author{
+  line-height:14px
+} 
+
+p.tweet span.metadata span.author img{
+  float:left;
+  margin:0 7px 0 0px;
+  width:38px;
+  height:38px
+}
+
+p.tweet a:hover{
+  text-decoration:underline
+}
+
+p.tweet span.timestamp{
+  font-size:12px;
+  display:block
+}
+
+a {
+    color: #278EB3;
+    outline: medium none;
+    text-decoration: none;
+}
+a:hover {
+    color: #2DADDA;
+}
+    </style>
   </head>
 	<body>
-		<h1>Who Tweeted This?</h1>
+		<h1><a href="https://github.com/gimsieke/Who-Tweeted-This" target="_blank">Who Tweeted This?</a></h1>
 		<div id="tweets">
 		</div>
 		<script>
+// This is so effing ugly. Humiliating. I want to create nodes proper, but without resorting to DOM methods.
+// The next Web should be done with XQuery.
+var render_tweet = function(tweet) { 
+  return "<div class='tweet'><p class='tweet'>" 
+	          + tweet.text 
+            + "<span class='timestamp'>"
+              + "<a title='" + tweet.created_at + "' href='http://twitter.com/#!/" + tweet.user.screen_name + "/status/" + tweet.id_str + "' target='_blank'>"
+              + tweet.created_at + "</a> " 
+              + "<a href='https://twitter.com/intent/favorite?tweet_id=" + tweet.id_str + "'>"
+                + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/favorite.png' /> Favorite</a> "
+              + "<a href='https://twitter.com/intent/retweet?tweet_id=" + tweet.id_str + "'>"
+                + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/retweet.png' /> Retweet</a> "
+              + "<a href='https://twitter.com/intent/tweet?in_reply_to=" + tweet.id_str + "'>"
+                + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/reply.png' /> Reply</a></span>\n  "
+            + "<span class='metadata'>"
+              + "<span class='author'>"
+                + "<a href='http://twitter.com/" + tweet.user.screen_name + "' target='_blank'>"
+                  + "<img src='" + tweet.user.profile_image_url + "'/></a>"
+                  + "<strong><a href='http://twitter.com/" + tweet.user.screen_name + "'>" + tweet.user.name + "</a></strong>"
+                  + "<br/>" + tweet.user.screen_name + "</span></span></p></div>";
+};
+
 document.addEventListener(
   'DOMContentLoaded', 
   function() {
@@ -17,7 +113,11 @@ document.addEventListener(
         chrome.extension.sendRequest(
           {action: "wtt_retrieve", link_href: tab.url}, 
           function(response) {
-            document.getElementById('tweets').innerHTML = '<a target="_blank" href="http://twitter.com' + response + '">' + response + '</a>';
+						var content = ''; // avoid DOM element creation at all cost ;-)
+            for (tweet in response.tweets) {
+              content += render_tweet(response.tweets[tweet]) + "\n  ";
+						}
+						document.getElementById('tweets').innerHTML = content;
           }
         );
       }
