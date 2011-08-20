@@ -97,8 +97,7 @@ var wtt_render_tweet = function(tweet, url) {
               + "<a href='https://twitter.com/intent/tweet?in_reply_to=" + tweet.id_str + "'>"
                 + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/reply.png' /> Reply</a>\n  "
               + "<a href='https://twitter.com/intent/tweet?text=" 
-                          + encodeURIComponent('Thanks to “Who Tweeted This,” I found out that it was @' + wtt_genitive(tweet.user.screen_name) + ' tweet that pointed me to ' + url + '​.') 
-                          + "&url=" + encodeURIComponent('http://chrome.google.com/webstore/detail/nlecohfddbofijkomahhaljdhbglildi') + "'>"
+                          + encodeURIComponent('Thanks to “Who Tweeted This,” I found out that it was @' + wtt_genitive(tweet.user.screen_name) + ' tweet that pointed me to ' + url + ' ⇒http://chrome.google.com/webstore/detail/nlecohfddbofijkomahhaljdhbglildi')  + "'>"
                 + "<img src='icons/wtt_16.png' /> Praise “Who Tweeted This”</a></span>\n  "
             + "<span class='metadata'>"
               + "<span class='author'>"
