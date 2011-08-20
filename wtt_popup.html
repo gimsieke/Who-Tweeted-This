@@ -84,18 +84,22 @@ a:hover {
     <script>
 // This is so effing ugly. Humiliating. I want to create nodes proper, but without resorting to DOM methods.
 // The next Web should be done with XQuery.
-var render_tweet = function(tweet) { 
+var render_tweet = function(tweet, url) { 
   return "<div class='tweet'><p class='tweet'>" 
             + tweet.text 
             + "<span class='timestamp'>"
               + "<a title='" + tweet.created_at + "' href='http://twitter.com/#!/" + tweet.user.screen_name + "/status/" + tweet.id_str + "' target='_blank'>"
-              + tweet.created_at + "</a> " 
+              + tweet.created_at + "</a> <br/>" 
               + "<a href='https://twitter.com/intent/favorite?tweet_id=" + tweet.id_str + "'>"
                 + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/favorite.png' /> Favorite</a> "
               + "<a href='https://twitter.com/intent/retweet?tweet_id=" + tweet.id_str + "'>"
                 + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/retweet.png' /> Retweet</a> "
               + "<a href='https://twitter.com/intent/tweet?in_reply_to=" + tweet.id_str + "'>"
-                + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/reply.png' /> Reply</a></span>\n  "
+                + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/reply.png' /> Reply</a>\n  "
+              + "<a href='https://twitter.com/intent/tweet?text=" 
+                          + encodeURIComponent('Thanks to “Who Tweeted This,” I found out that it was @' + tweet.user.screen_name + '’s tweet that pointed me to ' + url + '​.') 
+                          + "&url=" + encodeURIComponent('http://chrome.google.com/webstore/detail/nlecohfddbofijkomahhaljdhbglildi') + "'>"
+                + "<img src='icons/wtt_16.png' /> Praise “Who Tweeted This”</a></span>\n  "
             + "<span class='metadata'>"
               + "<span class='author'>"
                 + "<a href='http://twitter.com/" + tweet.user.screen_name + "' target='_blank'>"
@@ -115,7 +119,7 @@ document.addEventListener(
           function(response) {
             var content = ''; // avoid DOM element creation at all cost ;-)
             for (tweet in response.tweets) {
-              content += render_tweet(response.tweets[tweet]) + "\n  ";
+              content += render_tweet(response.tweets[tweet], tab.url) + "\n  ";
             }
             document.getElementById('tweets').innerHTML = content;
           }

@@ -4,7 +4,6 @@ function tweet_path(context_node) {
   return href;
 }
 
-
 function register_tweet_for_link(tweet_path, link_href) { 
   chrome.extension.sendRequest(
     {action: "wtt_register",
@@ -25,6 +24,7 @@ var patch_links = function() {
     }
   }
 };
+
 
 var repeat = setInterval(
   function() {

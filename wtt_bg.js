@@ -32,7 +32,7 @@ chrome.extension.onRequest.addListener(
 // Should resolve shortened links properly, by following the 30x until finally resolved, saving the last Location HTTP field. 
 // Unfortunately and surprisingly, there doesn't seem to be a straightforward way to achieve this.
 var wtt_normalize_url = function(url) {
-  return url.replace(/(\/?[#?].*|\/)$/, '');
+  return url.replace(/\/#!\//, '/').replace(/(\/?[#?].*|\/)$/, '');
 };
 
 var wtt_get_tweet = function(url, tweet_path) {
