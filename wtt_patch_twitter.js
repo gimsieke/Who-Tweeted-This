@@ -5,7 +5,6 @@ function tweet_path(context_node) {
 }
 
 function register_tweet_for_link(tweet_path, link_href) { 
-	alert(link_href);
 	if (link_href !== undefined) {
     chrome.extension.sendRequest(
       {action: "wtt_register",
