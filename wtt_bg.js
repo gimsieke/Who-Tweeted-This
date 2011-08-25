@@ -15,18 +15,6 @@ chrome.tabs.onUpdated.addListener(
 
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
-    if (request.action == "wtt_register") {
-      if (wtt_tweetPath_by_pageUrl[decodeURIComponent(request.link_href)] == undefined) {
-        wtt_tweetPath_by_pageUrl[decodeURIComponent(request.link_href)] = {};  
-      }
-      wtt_get_tweet(decodeURIComponent(request.link_href), request.tweet_path);
-      sendResponse({});
-    }
-  }
-);                                       
-
-chrome.extension.onRequest.addListener(
-  function(request, sender, sendResponse) {
     if (request.action == "wtt_open_tab") {
       var selected = true;
       if (request.selected == 'false') {
