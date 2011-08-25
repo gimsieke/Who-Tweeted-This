@@ -4,16 +4,16 @@ function tweet_path(context_node) {
   return href;
 }
 
-function register_tweet_for_link(tweet_path, link_href) { 
-	if (link_href !== undefined) {
-    chrome.extension.sendRequest(
-      {action: "wtt_register",
-       tweet_path: tweet_path,
-       link_href: link_href
-      }, 
-      function(response) {}
-    );
-  }
+
+function wtt_open_tab(tweet_path, link_href, select) { 
+  chrome.extension.sendRequest(
+    {action: "wtt_open_tab",
+     tweet_path: tweet_path,
+     link_href: link_href,
+     selected: select,
+    }, 
+    function(response) {}
+  );
 }
 
 
@@ -21,25 +21,18 @@ var patch_links = function() {
   var links = document.getElementsByClassName("twitter-timeline-link");
   for (var i = 0; i < links.length; i++) {
     if (! links[i].dataset.wtt) {
-      links[i].addEventListener(
-        "click", function() { 
-          register_tweet_for_link(
-            tweet_path(this), 
-            [this.getAttribute("data-ultimate-url"), this.getAttribute("title"), this.getAttribute("data-expanded-url"), this.getAttribute("href")].reduce(
-              function(a, b) {
-								return ((b + '').length > (a + '').length) ? b + '' : a + '';
-							},
-              ''
-            )
-          ); 
-        }, 
-        false
-      );
+      links[i].addEventListener("click", function(e) {
+        e.preventDefault();
+				var select = 'true';
+				if (e.button == 1) { // middle button
+					select = 'false';
+				}
+        wtt_open_tab(tweet_path(this), this.href, select)
+      });
       links[i].dataset.wtt = 'set';
     }
   }
 };
-
 
 var repeat = setInterval(
   function() {
