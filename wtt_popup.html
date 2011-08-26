@@ -82,6 +82,7 @@ a:hover {
     <h1><a href="https://github.com/gimsieke/Who-Tweeted-This" target="_blank">Who Tweeted This?</a></h1>
     <div id="tweets">
     </div>
+
     <script>
 // This is so effing ugly. Humiliating. I want to create nodes proper, but without resorting to DOM methods.
 // The next Web should be done with XQuery.
@@ -110,7 +111,6 @@ var wtt_render_tweet = function(tweet, url) {
 };
 
 var wtt_render_tweet_text = function(tweet) {
-  var text = tweet.text;
   var ents = [];
   for (var etype in tweet.entities) {
     tweet.entities[etype].forEach(
@@ -181,5 +181,6 @@ document.addEventListener(
   false
 );
     </script>
+
   </body>
 </html>
