@@ -17,13 +17,13 @@ body {
 
 h1 {
   font-size: 120%;
-  margin:0.8em 1.3em 0 1.3em;
+  margin:0.4em 1.3em 0 1.3em;
   padding-bottom:0;
 }
 
 div.tweet {
   background:url(http://a0.twimg.com/images/themes/theme1/bg.png) #C0DEED;padding:20px;
-  margin:1em 0 0.5em 0;
+  margin:0.5em 0 0.5em 0;
 } 
 
 p.tweet{
@@ -48,7 +48,7 @@ p.tweet span.metadata{
 }
 
 p.tweet span.metadata span.author{
-  line-height:14px
+  line-height:2.5ex;
 } 
 
 p.tweet span.metadata span.author img{
@@ -63,8 +63,9 @@ p.tweet a:hover{
 }
 
 p.tweet span.timestamp{
-  font-size:10pt;
-  display:block
+  font-size:9pt;
+  display:block;
+	margin-top:0.3em;
 }
 
 a {
@@ -85,20 +86,21 @@ a:hover {
 // This is so effing ugly. Humiliating. I want to create nodes proper, but without resorting to DOM methods.
 // The next Web should be done with XQuery.
 var wtt_render_tweet = function(tweet, url) { 
+	var created_at = tweet.created_at.replace(/\+0000/, 'UTC');
   return "<div class='tweet'><p class='tweet'>" 
-            + tweet.text 
+            + wtt_render_tweet_text(tweet) 
             + "<span class='timestamp'>"
-              + "<a title='" + tweet.created_at + "' href='http://twitter.com/#!/" + tweet.user.screen_name + "/status/" + tweet.id_str + "' target='_blank'>"
-              + tweet.created_at + "</a> <br/>" 
-              + "<a href='https://twitter.com/intent/favorite?tweet_id=" + tweet.id_str + "'>"
-                + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/favorite.png' /> Favorite</a> "
+              + "<a title='" + created_at + "' href='http://twitter.com/#!/" + tweet.user.screen_name + "/status/" + tweet.id_str + "' target='_blank'>"
+                + created_at + "</a> </span>" 
+            + "<span class='timestamp'><a href='https://twitter.com/intent/favorite?tweet_id=" + tweet.id_str + "'>"
+              + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/favorite.png' /> Favorite</a> "
               + "<a href='https://twitter.com/intent/retweet?tweet_id=" + tweet.id_str + "'>"
                 + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/retweet.png' /> Retweet</a> "
               + "<a href='https://twitter.com/intent/tweet?in_reply_to=" + tweet.id_str + "'>"
                 + "<img src='http://si0.twimg.com/images/dev/cms/intents/icons/reply.png' /> Reply</a>\n  "
               + "<a href='https://twitter.com/intent/tweet?text=" 
                           + encodeURIComponent('Thanks to “Who Tweeted This,” I found out that it was @' + wtt_genitive(tweet.user.screen_name) + ' tweet that pointed me to ' + url + ' ⇒http://chrome.google.com/webstore/detail/nlecohfddbofijkomahhaljdhbglildi')  + "'>"
-                + "<img src='icons/wtt_16.png' /> Praise “Who Tweeted This”</a></span>\n  "
+                + "<img src='icons/wtt_16.png' /> Praise “Who Tweeted This”…</a></span>\n  "
             + "<span class='metadata'>"
               + "<span class='author'>"
                 + "<a href='http://twitter.com/" + tweet.user.screen_name + "' target='_blank'>"
@@ -106,6 +108,48 @@ var wtt_render_tweet = function(tweet, url) {
                   + "<strong><a href='http://twitter.com/" + tweet.user.screen_name + "'>" + tweet.user.name + "</a></strong>"
                   + "<br/>" + tweet.user.screen_name + "</span></span></p></div>";
 };
+
+var wtt_render_tweet_text = function(tweet) {
+  var text = tweet.text;
+  var ents = [];
+  for (var etype in tweet.entities) {
+    tweet.entities[etype].forEach(
+      function(ent) {
+        ents.push(ent);
+      }
+    );
+  }
+  var sorted_ents = ents.sort(
+    function(a,b) {
+      return a.indices[0] - b.indices[0];
+    }
+  );
+  var start_pos = 0;
+  var output = '';
+  sorted_ents.forEach(
+    function(ent) {
+      end_pos = ent.indices[0];
+      output += tweet.text.slice(start_pos, end_pos);
+      output += wtt_tweetLink(ent);
+      start_pos = ent.indices[1];
+    }
+  );
+  var end_pos = tweet.text.length;
+  output += tweet.text.slice(start_pos, end_pos);
+  return sorted_ents.length == 0 ? tweet.text : output;
+}
+
+var wtt_tweetLink = function(ent) {
+  if (ent.text !== undefined) {
+    return "<a target='_blank' href='http://twitter.com/#!/search?q=%23" + encodeURIComponent(ent.text) + "' class='twitter-hastag' rel='nofollow' title='#" + ent.text + "'>#" + ent.text + '</a>'; 
+  } else if (ent.screen_name !== undefined) {
+    return "<a target='_blank' href='http://twitter.com/" + ent.screen_name + "' class='twitter-atreply' rel='nofollow' title='" + ent.name + "'>@" + ent.screen_name + '</a>'; 
+  } else if (ent.url !== undefined) {
+    var display_url = ent.display_url !== undefined && ent.display_url !== null ? ent.display_url : ent.url;
+    var expanded_url = ent.expanded_url !== undefined && ent.expanded_url !== null ? ent.expanded_url : ent.url;
+    return "<a target='_blank' href='" + ent.url + "' class='twitter-timeline-link' rel='nofollow' title='" + expanded_url + "'>" + display_url + '</a>'; 
+  }
+}
 
 var wtt_genitive = function(name) {
   if (name.match(/s$/i)) {

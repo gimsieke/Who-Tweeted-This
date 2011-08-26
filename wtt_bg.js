@@ -43,9 +43,9 @@ chrome.extension.onRequest.addListener(
 
 var wtt_get_tweet = function(url, tabId) {
   var tweet_path = wtt_tweetPath_by_tabId[tabId];
-  var tweet_id = tweet_path.replace(/^.+\//, '');
+  var tweet_id = tweet_path.replace(/^.+\/([0-9]+)\/?/, '$1');
   var req = new XMLHttpRequest();
-  req.open('GET', 'http://api.twitter.com/1/statuses/show.json?id=' + tweet_id);
+  req.open('GET', 'http://api.twitter.com/1/statuses/show.json?include_entities=1&id=' + tweet_id);
   req.onreadystatechange = function() {
     if (req.readyState === 4 && req.status === 200) {
       var res = JSON.parse(req.responseText);
