@@ -23,10 +23,10 @@ var patch_links = function() {
     if (! links[i].dataset.wtt) {
       links[i].addEventListener("click", function(e) {
         e.preventDefault();
-				var select = 'true';
-				if (e.button == 1) { // middle button
-					select = 'false';
-				}
+        var select = 'true';
+        if (e.button == 1) { // middle button
+          select = 'false';
+        }
         wtt_open_tab(tweet_path(this), this.href, select)
       });
       links[i].dataset.wtt = 'set';
