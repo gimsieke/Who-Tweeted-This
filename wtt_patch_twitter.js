@@ -1,6 +1,6 @@
 
 function tweet_path(context_node) { 
-  var href = document.evaluate("ancestor::div[@class = 'stream-item' or starts-with(@class, 'stream-item ')]//a[@class = 'tweet-timestamp']/@href", context_node, null, XPathResult.STRING_TYPE, null).stringValue;
+  var href = document.evaluate("ancestor::div[@class = 'stream-item' or starts-with(@class, 'stream-item ') or starts-with(@class, 'js-stream-item ')]//a[@class = 'tweet-timestamp']/@href", context_node, null, XPathResult.STRING_TYPE, null).stringValue;
   return href;
 }
 
@@ -10,7 +10,7 @@ function wtt_open_tab(tweet_path, link_href, select) {
     {action: "wtt_open_tab",
      tweet_path: tweet_path,
      link_href: link_href,
-     selected: select,
+     selected: select
     }, 
     function(response) {}
   );

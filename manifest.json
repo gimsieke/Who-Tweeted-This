@@ -5,7 +5,7 @@
       "matches": [ "http://twitter.com/*", "https://twitter.com/*" ],
       "run_at": "document_idle"
    } ],
-	 "background_page": "wtt_bg.html",
+   "background_page": "wtt_bg.html",
    "description": "“Who Tweeted This” memorizes the tweet from which you followed a link and displays it on the linked page.",
    "icons": {
       "128": "icons/wtt_128.png",
@@ -17,8 +17,7 @@
       "default_title": "Read the tweet that made you open this page",
       "default_popup": "wtt_popup.html"
    },
-   "permissions": [ "http://twitter.com/*", "https://twitter.com/*",
-	                  "tabs", "http://*/*", "https://*/*" ],
-   "version": "0.8.2",
+   "permissions": [ "tabs", "http://*/*", "https://*/*" ],
+   "version": "1.0",
    "homepage_url": "https://github.com/gimsieke/Who-Tweeted-This"
 }

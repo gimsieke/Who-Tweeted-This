@@ -1,6 +1,7 @@
 
 wtt_tweetPath_by_pageUrl = {};
 wtt_tweetPath_by_tabId = {};
+wtt_openedTabs = 0;
 
 chrome.tabs.onUpdated.addListener(
   function(tabId, changeInfo, tab) {
@@ -13,6 +14,14 @@ chrome.tabs.onUpdated.addListener(
   }
 );
 
+chrome.tabs.onRemoved.addListener(
+  function(tabId, removeInfo) {
+    if (wtt_tweetPath_by_tabId[tabId] !== undefined) {
+      wtt_openedTabs--;
+    }
+  }
+);
+
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     if (request.action == "wtt_open_tab") {
@@ -20,8 +29,9 @@ chrome.extension.onRequest.addListener(
       if (request.selected == 'false') {
         selected = false;
       }
+			wtt_openedTabs++;
       chrome.tabs.create(
-        { url:request.link_href, selected:selected },
+        { url:request.link_href, selected:selected, index:sender.tab.index + wtt_openedTabs },
         function(tab) {
           wtt_tweetPath_by_tabId[tab.id] = request.tweet_path;
         }
