@@ -1,6 +1,6 @@
 
 function tweet_path(context_node) { 
-  var href = document.evaluate("ancestor::div[@class = 'stream-item' or starts-with(@class, 'stream-item ') or starts-with(@class, 'js-stream-item ')]//a[starts-with(@class, 'tweet-timestamp') or (@class = '_timestamp')]/@href", context_node, null, XPathResult.STRING_TYPE, null).stringValue;
+  var href = document.evaluate("ancestor::div[@class = 'stream-item' or starts-with(@class, 'stream-item ') or starts-with(@class, 'js-stream-item ') or starts-with(@class, 'tweet ')]//a[starts-with(@class, 'tweet-timestamp') or (@class = '_timestamp')]/@href", context_node, null, XPathResult.STRING_TYPE, null).stringValue;
   return href;
 }
 
