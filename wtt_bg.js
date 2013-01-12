@@ -29,7 +29,7 @@ chrome.extension.onRequest.addListener(
       if (request.selected == 'false') {
         selected = false;
       }
-			wtt_openedTabs++;
+      wtt_openedTabs++;
       chrome.tabs.create(
         { url:request.link_href, selected:selected, index:sender.tab.index + wtt_openedTabs },
         function(tab) {

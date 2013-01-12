@@ -1,7 +1,7 @@
 // This is so effing ugly. Humiliating. I want to create nodes proper, but without resorting to DOM methods.
 // The next Web should be done with XQuery.
 var wtt_render_tweet = function(tweet, url) { 
-	var created_at = tweet.created_at.replace(/\+0000/, 'UTC');
+  var created_at = tweet.created_at.replace(/\+0000/, 'UTC');
   return "<div class='tweet'><p class='tweet'>" 
             + wtt_render_tweet_text(tweet) 
             + "<span class='timestamp'>"
