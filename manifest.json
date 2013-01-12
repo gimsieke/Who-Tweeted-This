@@ -21,6 +21,7 @@
       "default_popup": "wtt_popup.html"
    },
    "permissions": [ "tabs", "http://*/*", "https://*/*" ],
-   "version": "1.2.0",
+   "content_security_policy": "script-src 'self' https://platform.twitter.com; object-src 'self'",
+   "version": "1.2.1",
    "homepage_url": "https://github.com/gimsieke/Who-Tweeted-This"
 }
